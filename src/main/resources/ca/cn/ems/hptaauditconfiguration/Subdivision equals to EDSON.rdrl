@@ -1,0 +1,18 @@
+package ca.cn.ems.hptaauditconfiguration;
+
+import java.lang.Number;
+import ca.cn.ems.hptaauditconfiguration.AuditDetails;
+import ca.cn.ems.hptaauditconfiguration.UnlimitedZoneData;
+
+rule "Subdivision equals to EDSON"
+	dialect "mvel"
+	enabled true
+	salience 50
+	when
+		auditDetails : AuditDetails( ruleApplied : outputBusinessRulesApplied, inputSubDivision == "EDSON" )
+	then
+		auditDetails.setOutputMinimumNonComplianceSpeed( 25 );
+		auditDetails.setOutputThrottleNotchCumulativeComplianceLimit( 20 );
+		auditDetails.setOutputPassingStationLimit( 6 );
+		ruleApplied.add( "Train sub division is EDSON" );
+end

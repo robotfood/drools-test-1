@@ -1,0 +1,17 @@
+package ca.cn.ems;
+
+import java.lang.Number;
+import ca.cn.ems.hptaauditconfiguration.AuditDetails;
+import ca.cn.ems.hptaauditconfiguration.UnlimitedZoneData;
+
+rule "Train Type is G"
+	dialect "mvel"
+	enabled true
+	salience 20
+	when
+		auditDetails : AuditDetails( inputTrainType == "G" , ruleApplied : outputBusinessRulesApplied)
+	then
+		auditDetails.setOutputHPAllowanceBuffer( 1 );
+		auditDetails.setOutputMinimumThresholdHPT( 0.8 );
+		ruleApplied.add( "Train type equals to G" );
+end

@@ -1,0 +1,18 @@
+package ca.cn.ems;
+
+import java.lang.Number;
+import ca.cn.ems.hptaauditconfiguration.AuditDetails;
+import ca.cn.ems.hptaauditconfiguration.UnlimitedZoneData;
+
+rule "Train Power Type is AC"
+	dialect "mvel"
+	salience 130
+	enabled true
+	when
+		auditDetails : AuditDetails( inputTrainPowerType == "AC" , businessRuleApplied : outputBusinessRulesApplied)
+	then
+		auditDetails.setOutputMinimumNonComplianceSpeed( 11 );
+		auditDetails.setOutputPowerModeConsecutiveComplianceLimit( 5 );
+		auditDetails.setOutputPowerModeCumulativeComplianceLimit( 15 );
+		businessRuleApplied.add( "Train Power Type equals to AC" );
+end

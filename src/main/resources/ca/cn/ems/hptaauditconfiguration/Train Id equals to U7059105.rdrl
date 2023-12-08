@@ -1,0 +1,14 @@
+package ca.cn.ems.hptaauditconfiguration;
+
+import java.lang.Number;
+
+rule "Train Id equals to U7059105"
+	dialect "mvel"
+	enabled true
+	salience 10
+	when
+		auditDetails : AuditDetails( inputTrainId == "U7059105" , businessRuleApplied : outputBusinessRulesApplied)
+	then
+		auditDetails.setOutputMinimumNonComplianceSpeed( 18 );
+		businessRuleApplied.add( "Train Id equals to U7059105" );
+end

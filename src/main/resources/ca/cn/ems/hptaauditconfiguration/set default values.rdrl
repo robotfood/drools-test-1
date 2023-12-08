@@ -1,0 +1,28 @@
+package ca.cn.ems.hptaauditconfiguration;
+
+import java.lang.Number;
+
+rule "set default values"
+	dialect "mvel"
+	salience 150
+	enabled true
+	when
+		auditDetails : AuditDetails( businessRuleApplied : outputBusinessRulesApplied)
+	then
+		auditDetails.setOutputAuditArrivalTimeLimit( 11 );
+		auditDetails.setOutputAuditInterval( 10 );
+		auditDetails.setOutputHPAllowanceBuffer( 0 );
+		auditDetails.setOutputLocomotiveDataIntervalNonCompliance( 100 );
+		auditDetails.setOutputMinimumNonComplianceSpeed( 10 );
+		auditDetails.setOutputMissingInformationCumulativeLimit( 0 );
+		auditDetails.setOutputPowerModeConsecutiveComplianceLimit( 20 );
+		auditDetails.setOutputPowerModeCumulativeComplianceLimit( 20 );
+		auditDetails.setOutputThrottleNotchConsecutiveComplianceLimit( 5 );
+		auditDetails.setOutputThrottleNotchCumulativeComplianceLimit( 10 );
+		auditDetails.setOutputPassingStationLimit( 5 );
+		auditDetails.setOutputFlexibleNonCompliantCumulativeThreshold( 15 );
+		auditDetails.setOutputFlexibleNonCompliantConsecutiveThreshold( 5 );
+		auditDetails.setOutputMinimumThresholdHPT( 0.6 );
+		auditDetails.setOutputMaximumMinutesOfTrainInYardStatus( 480 );
+		businessRuleApplied.add( "Default Value rule applied" );
+end

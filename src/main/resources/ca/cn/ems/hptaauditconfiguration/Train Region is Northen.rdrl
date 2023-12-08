@@ -1,0 +1,14 @@
+package ca.cn.ems.hptaauditconfiguration;
+
+import java.lang.Number;
+
+rule "Train Region is Northen"
+	dialect "mvel"
+	salience 80
+	enabled true
+	when
+		auditDetails : AuditDetails( inputRegion == "Northern" , businessApplied : outputBusinessRulesApplied)
+	then
+		auditDetails.setOutputMinimumNonComplianceSpeed( 30 );
+		businessApplied.add( "Train Region is Northen" );
+end

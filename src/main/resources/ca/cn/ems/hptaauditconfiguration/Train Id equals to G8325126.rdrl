@@ -1,0 +1,15 @@
+package ca.cn.ems.hptaauditconfiguration;
+
+import java.lang.Number;
+
+rule "Train Id equals to G8325126"
+	dialect "mvel"
+	enabled true
+	salience 10
+	when
+		auditDetails : AuditDetails( inputTrainId == "G8325126" , businessRuleApplied : outputBusinessRulesApplied)
+	then
+		auditDetails.setOutputMinimumNonComplianceSpeed( 15 );
+		auditDetails.setOutputAuditInterval( 5 );
+		businessRuleApplied.add( "Train Id equals to G8325126" );
+end

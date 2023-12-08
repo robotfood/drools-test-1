@@ -1,0 +1,16 @@
+package ca.cn.ems;
+
+import java.lang.Number;
+import ca.cn.ems.hptaauditconfiguration.AuditDetails;
+import ca.cn.ems.hptaauditconfiguration.UnlimitedZoneData;
+
+rule "Check in Unlimited Zone"
+	dialect "mvel"
+	when
+		auditDetails : AuditDetails( milePoint : inputMilePointRange, businessRuleApplied : outputBusinessRulesApplied)
+		(unlimitedZone : UnlimitedZoneData( ( startMilePointWithBuffer <= milePoint && endMilePointWithBuffer >= milePoint )|| ( startMilePointWithBuffer >= milePoint && endMilePointWithBuffer <= milePoint ), restrictionType : restrictionType) from auditDetails.inputUnlimitedZoneDataList)
+	then
+		auditDetails.setOutputInUnlimitedZone( true );
+		auditDetails.setOutputZoneRestrictionType( restrictionType );
+		businessRuleApplied.add( "Check In Unlimited Zone Rule" );
+end

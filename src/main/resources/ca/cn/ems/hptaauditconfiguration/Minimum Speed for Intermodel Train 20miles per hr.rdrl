@@ -1,0 +1,13 @@
+package ca.cn.ems.hptaauditconfiguration;
+
+import java.lang.Number;
+
+rule "Minimum Speed for Intermodel Train 20miles per hr"
+	dialect "mvel"
+	salience 20
+	when
+		auditDetails : AuditDetails( inputTrainType == "Q" , ruleApplied : outputBusinessRulesApplied)
+	then
+		auditDetails.setOutputMinimumNonComplianceSpeed( 20 );
+		ruleApplied.add( "Minimum Speed for Intermodel Train 20 miles per hr" );
+end

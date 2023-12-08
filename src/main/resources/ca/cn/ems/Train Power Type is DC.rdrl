@@ -1,0 +1,18 @@
+package ca.cn.ems;
+
+import java.lang.Number;
+import ca.cn.ems.hptaauditconfiguration.AuditDetails;
+import ca.cn.ems.hptaauditconfiguration.UnlimitedZoneData;
+
+rule "Train Power Type is DC"
+	dialect "mvel"
+	salience 130
+	enabled true
+	when
+		auditDetails : AuditDetails( inputTrainPowerType == "DC" , businessRuleApplied : outputBusinessRulesApplied)
+	then
+		auditDetails.setOutputPowerModeConsecutiveComplianceLimit( 10 );
+		auditDetails.setOutputPowerModeCumulativeComplianceLimit( 10 );
+		auditDetails.setOutputHPAllowanceBuffer( 5 );
+		businessRuleApplied.add( "Train Power Type equals to DC" );
+end

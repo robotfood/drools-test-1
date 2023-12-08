@@ -1,0 +1,15 @@
+package ca.cn.ems.hptaauditconfiguration;
+
+import java.lang.Number;
+
+rule "Train Region Rule Western"
+	dialect "mvel"
+	enabled true
+	salience 80
+	when
+		auditDetails : AuditDetails( inputRegion == "Western" , businessRuleApplied : outputBusinessRulesApplied)
+	then
+		auditDetails.setOutputMinimumNonComplianceSpeed( 20 );
+		auditDetails.setOutputMissingInformationCumulativeLimit( 10 );
+		businessRuleApplied.add( "Train Region is Western" );
+end

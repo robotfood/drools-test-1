@@ -1,0 +1,17 @@
+package ca.cn.ems.hptaauditconfiguration;
+
+import java.lang.Number;
+import ca.cn.ems.hptaauditconfiguration.AuditDetails;
+import ca.cn.ems.hptaauditconfiguration.UnlimitedZoneData;
+
+rule "Train consist type is Conventional"
+	dialect "mvel"
+	enabled true
+	salience 120
+	when
+		auditDetails : AuditDetails( ruleApplied : outputBusinessRulesApplied, inputTrainConsistType == "Conventional" )
+	then
+		auditDetails.setOutputAuditArrivalTimeLimit( 5 );
+		auditDetails.setOutputMaximumMinutesOfTrainInYardStatus( 600 );
+		ruleApplied.add( "Train Consist Type equals to Conventional" );
+end

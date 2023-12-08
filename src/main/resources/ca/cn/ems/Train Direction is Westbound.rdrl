@@ -1,0 +1,18 @@
+package ca.cn.ems;
+
+import java.lang.Number;
+import ca.cn.ems.hptaauditconfiguration.AuditDetails;
+import ca.cn.ems.hptaauditconfiguration.UnlimitedZoneData;
+
+rule "Train Direction is Westbound"
+	dialect "mvel"
+	enabled true
+	salience 30
+	when
+		auditDetails : AuditDetails( inputTrainType == "Westbound" , ruleApplied : outputBusinessRulesApplied)
+	then
+		auditDetails.setOutputMinimumNonComplianceSpeed( 13.5 );
+		auditDetails.setOutputThrottleNotchConsecutiveComplianceLimit( 20 );
+		auditDetails.setOutputThrottleNotchCumulativeComplianceLimit( 20 );
+		ruleApplied.add( "Train Direction equals to Westbound" );
+end

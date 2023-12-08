@@ -1,0 +1,16 @@
+package ca.cn.ems;
+
+import java.lang.Number;
+import ca.cn.ems.hptaauditconfiguration.AuditDetails;
+import ca.cn.ems.hptaauditconfiguration.UnlimitedZoneData;
+
+rule "ActualHpt greater than 1"
+	dialect "mvel"
+	enabled true
+	salience 90
+	when
+		auditDetails : AuditDetails( inputActualHpt > 1 , ruleApplied : outputBusinessRulesApplied)
+	then
+		auditDetails.setOutputMinimumThresholdHPT( 1.3 );
+		ruleApplied.add( "ActualHpt greater than 1" );
+end

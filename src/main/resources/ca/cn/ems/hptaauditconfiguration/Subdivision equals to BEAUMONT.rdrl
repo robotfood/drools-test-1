@@ -1,0 +1,18 @@
+package ca.cn.ems.hptaauditconfiguration;
+
+import java.lang.Number;
+import ca.cn.ems.hptaauditconfiguration.AuditDetails;
+import ca.cn.ems.hptaauditconfiguration.UnlimitedZoneData;
+
+rule "Subdivision equals to BEAUMONT"
+	dialect "mvel"
+	enabled true
+	salience 50
+	when
+		auditDetails : AuditDetails( ruleApplied : outputBusinessRulesApplied, inputSubDivision == "BEAUMONT" )
+	then
+		auditDetails.setOutputMinimumNonComplianceSpeed( 13 );
+		auditDetails.setOutputThrottleNotchCumulativeComplianceLimit( 20 );
+		auditDetails.setOutputLocomotiveDataIntervalNonCompliance( 60 );
+		ruleApplied.add( "Train sub division is BEAUMONT" );
+end
